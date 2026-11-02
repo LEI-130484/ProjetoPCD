@@ -16,11 +16,6 @@ import iscot.client.gui.LightIcon;
 import iscot.client.gui.VentilatorIcon;
 import iscot.enums.Areas;
 import iscot.enums.Type;
-import iscot.event.Event;
-import iscot.event.RegistrationEvent;
-import iscot.event.highlevelorder.AreaLightingOrderEvent;
-import iscot.event.highlevelorder.AreaVentilationOrderEvent;
-import iscot.event.sensor.LightSensorEvent;
 
 public class Ventilator {
 
@@ -39,14 +34,11 @@ public class Ventilator {
 			System.err.println("Invalid arguments!");
 		}
 		else {
-			Socket socket=new Socket(args[0],Integer.parseInt(args[1]));
-			ObjectOutputStream out= new ObjectOutputStream(socket.getOutputStream()); // useless, no outgoing messages
-			ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-
-			// register with the server
+			// TODO connect to server
+			
+			// TODO register with the server
 			Areas area=Areas.valueOf(args[2]);
-			out.writeObject(new RegistrationEvent(area, Type.ACTUATOR));
-
+			
 			JFrame janela = new JFrame("Ventilador em "+area);
 			janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -62,22 +54,13 @@ public class Ventilator {
 			janela.setMinimumSize(janela.getSize());
 			janela.pack();
 			janela.setVisible(true);
+			
+			Thread.sleep(5000);
+			ventilator.setAtivo(true);
 
-			while(true) {
-				Event message=(Event) in.readObject();
-				if( message instanceof AreaVentilationOrderEvent) {
-					AreaVentilationOrderEvent areaVentilationOrderMessage=(AreaVentilationOrderEvent)message;
-					if(areaVentilationOrderMessage.area == area) {
-						ventilator.setAtivo(areaVentilationOrderMessage.state);
-						System.err.println("Altering Ventilator  at:"+area+" to;"+areaVentilationOrderMessage.state);
-					}
-					else
-						System.err.println("Message for unexpected area!");
-				}
-				else
-					System.err.println("Unexpected message in Ventilator:"+message);
-
-			}
+			// TODO: receive and handle messages from server
+			
+			// TODO: for first phase: create an appropriate event hardcoded locally and change the GUI accordingly
 		}
 	}
 }
