@@ -29,7 +29,7 @@ public class GUIEventSimulation extends JFrame {
                 valor -> {
                     // Instanciar o evento criado na Fase 2
                     TemperatureSensorEvent evento = new TemperatureSensorEvent(
-                            Areas.LIVINGROOM,
+                            Areas.LivingRoom,
                             1,
                             valor
                     );
@@ -43,11 +43,11 @@ public class GUIEventSimulation extends JFrame {
         luzIcon = new LightIcon();
 
         // Botão para simular a chegada de uma Ordem de Alto Nível ao Atuador
-        JButton btnSimularOrdemLuz = new JButton("Simular Ordem: Ligar Luz");
+        JButton btnSimularOrdemLuz = new JButton("Interruptor");
         btnSimularOrdemLuz.addActionListener(e -> {
             // Simula a receção de um HighLevelOrderEvent
             AreaLightingOrderEvent ordem = new AreaLightingOrderEvent(
-                    Areas.LIVINGROOM,
+                    Areas.LivingRoom,
                     101,
                     !luzIcon.isLigada() // Alterna o estado
             );
@@ -57,7 +57,7 @@ public class GUIEventSimulation extends JFrame {
 
             // Imprime na consola a confirmação da ação
             System.out.println("[GUI -> ACTUATOR ORDER] " + ordem);
-            System.out.println("[HISTÓRICO ATUADOR] Luz " + (luzIcon.isLigada() ? "LIGADA" : "DESLIGADA"));
+            System.out.println("[HISTÓRICO ATUADOR] Luz " + (luzIcon.isLigada() ? "DESLIGADA" : "LIGADA"));
         });
 
         // Painel para o Atuador

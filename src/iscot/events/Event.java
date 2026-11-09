@@ -7,10 +7,10 @@ import java.io.Serializable;
 public abstract class Event implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    protected Areas area;
-    protected Type type;
-    protected int id;
-    protected long timestamp;
+    Areas area;
+    Type type;
+    int id;
+    long timestamp;
 
     public Event(Areas area, Type type, int id) {
         this.area = area;
