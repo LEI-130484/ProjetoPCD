@@ -1,4 +1,4 @@
-package iscot.client.gui;
+    package iscot.client.gui;
 
 import java.awt.*;
 import java.awt.geom.*;
