@@ -1,5 +1,5 @@
 package iscot.events;
 
-public class SensorEvent {
+public class SensorEvent extends Event {
     
 }

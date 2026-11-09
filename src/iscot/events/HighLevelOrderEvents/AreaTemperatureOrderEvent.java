@@ -1,4 +1,4 @@
-package iscot.server.events;
+package iscot.events.HighLevelOrderEvents;
 
 public class AreaTemperatureOrderEvent {
     
