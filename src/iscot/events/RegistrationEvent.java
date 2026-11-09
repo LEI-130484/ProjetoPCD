@@ -16,9 +16,4 @@ public class RegistrationEvent extends Event{
     public Areas getArea() {
         return this.area;
     }
-
-    int getId() {
-        return this.id;
-    }
-
 }
