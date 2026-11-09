@@ -9,17 +9,14 @@ public class HighLevelOrderEvent extends Event {
         super(area, type, id);
     }
 
-    @Override
     Areas getArea() {
         return this.area;
     }
 
-    @Override
     Type getType() {
         return this.type;
     }
 
-    @Override
     int getId() {
         return this.id;
     }
