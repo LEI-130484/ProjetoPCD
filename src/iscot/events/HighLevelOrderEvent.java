@@ -1,4 +1,4 @@
-package iscot.server.events;
+package iscot.events;
 
 public class HighLevelOrderEvent extends Event {
     
