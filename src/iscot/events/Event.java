@@ -1,35 +1,21 @@
 package iscot.events;
 
-import iscot.Area;
+import iscot.enums.Areas;
+import iscot.enums.Type;
 
-public class Event {
+public abstract class Event {
 
-    private Area area;
-    private String deviceId;
-    private long timpestamp;
-    
-    public Area getArea(){
-        return area;
-    }
+    Areas area;
+    Type type;
+    int id;
 
-    public void setArea(Area area){
+    public Event(Areas area, Type type, int id) {
         this.area = area;
+        this.type = type;
+        this.id = id;
     }
 
-    public String getDeviceId(){
-        return deviceId;
-    }
-
-    public void setDevideId(String deviceId){
-        this.deviceId=deviceId;
-    }
-
-    public long getTimpestamp(){
-        return getTimpestamp();
-    }
-
-    public void setTimestamp(long timestamp){
-        this.timpestamp=timestamp;
-    }
-    
+    abstract Areas getArea();
+    abstract Type getType();
+    abstract int getId();
 }

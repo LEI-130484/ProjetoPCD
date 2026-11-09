@@ -1,22 +1,24 @@
 package iscot.events;
 
-import iscot.Area;
+import iscot.enums.Areas;
 import iscot.enums.Type;
 
 public class RegistrationEvent extends Event{
-    private Type typeOfClient;
-    private Area area;
 
-    public RegistrationEvent(Type type, Area area) {
-        this.area = area;
-        this.typeOfClient = type;
+    public RegistrationEvent(Type type, Areas area, int id) {
+        super(area, type, id);
+    }
+    
+    public Type getType() {
+        return this.type;
     }
 
-    public Type getTypeOfClient() {
-        return this.typeOfClient;
-    }
-
-    public Type getArea() {
+    public Areas getArea() {
         return this.area;
     }
+
+    int getId() {
+        return this.id;
+    }
+
 }
