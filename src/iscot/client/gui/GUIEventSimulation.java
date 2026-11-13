@@ -1,8 +1,15 @@
 package iscot.client.gui;
 
 import iscot.enums.Areas;
+import iscot.enums.AirConditioningMode;
 import iscot.events.HighLevelOrderEvents.AreaLightingOrderEvent;
+import iscot.events.HighLevelOrderEvents.AreaIrrigationOrderEvent;
+import iscot.events.HighLevelOrderEvents.AreaVentilationOrderEvent;
+import iscot.events.HighLevelOrderEvents.AreaTemperatureOrderEvent;
 import iscot.events.SensorEvents.TemperatureSensorEvent;
+import iscot.events.SensorEvents.HumiditySensorEvent;
+import iscot.events.SensorEvents.GroundMoistureSensorEvent;
+import iscot.events.SensorEvents.LightSensorEvent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,68 +17,141 @@ import java.awt.*;
 public class GUIEventSimulation extends JFrame {
 
     private final LightIcon luzIcon;
+    private final ACIcon acIcon;
+    private final VentilatorIcon ventiladorIcon;
+    private final IrrigationIcon regaIcon;
 
     public GUIEventSimulation() {
-        setTitle("IscoT - Simulação GUI (Fase 3)");
+        setTitle("IscoT - Simulação GUI Alargada (Fases 1 a 3)");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
+        setLayout(new GridLayout(2, 4, 15, 15));
 
-        // 1. Instanciar o controlo do Sensor de Temperatura (GUI)
-        // O lambda (atualizador) executa quando o utilizador larga o slider
+        // ==========================================
+        // 1. SENSORES (Painéis de Controlo)
+        // ==========================================
+
+        // Sensor de Temperatura
         SensorControl sensorTemp = new SensorControl(
-                "🌡️",
-                "Sensor Temperatura",
-                "ºC",
-                10.0,   // Min
-                40.0,   // Max
-                0.5,    // Passo
-                22.0,   // Valor Inicial
+                "🌡️", "Sensor Temperatura", "ºC",
+                10.0, 40.0, 0.5, 22.0,
                 valor -> {
-                    // Instanciar o evento criado na Fase 2
-                    TemperatureSensorEvent evento = new TemperatureSensorEvent(
-                            Areas.LivingRoom,
-                            1,
-                            valor
-                    );
-
-                    // Imprimir na consola como pedido no guião (Fase 3)
+                    TemperatureSensorEvent evento = new TemperatureSensorEvent(Areas.Kitchen, 1, valor);
                     System.out.println("[GUI -> SENSOR EVENT] " + evento);
                 }
         );
 
-        // 2. Instanciar o componente visual do Atuador (Luz)
+        // Sensor de Humidade do Ar
+        SensorControl sensorHumidadeAr = new SensorControl(
+                "💧", "Sensor Humidade Ar", "%",
+                0.0, 100.0, 1.0, 50.0,
+                valor -> {
+                    HumiditySensorEvent evento = new HumiditySensorEvent(Areas.WC, 2, valor);
+                    System.out.println("[GUI -> SENSOR EVENT] " + evento);
+                }
+        );
+
+        // Sensor de Humidade do Solo
+        SensorControl sensorSolo = new SensorControl(
+                "🌱", "Sensor Humidade Solo", "%",
+                0.0, 100.0, 1.0, 30.0,
+                    valor -> {
+                        GroundMoistureSensorEvent evento = new GroundMoistureSensorEvent(Areas.Garden, 3, valor < 30.0);
+                    System.out.println("[GUI -> SENSOR EVENT] " + evento);
+                }
+        );
+
+        // Sensor de Luz
+        SensorControl sensorLuz = new SensorControl(
+                "☀️", "Sensor de Luz", "lx",
+                0.0, 1000.0, 10.0, 200.0,
+                valor -> {
+                    LightSensorEvent evento = new LightSensorEvent(Areas.LivingRoom, 4, valor);
+                    System.out.println("[GUI -> SENSOR EVENT] " + evento);
+                }
+        );
+
+        // ==========================================
+        // 2. ATUADORES (Componentes Visuais + Botões de Simulação)
+        // ==========================================
+
+        // A) Atuador de Iluminação (LightIcon)
         luzIcon = new LightIcon();
-
-        // Botão para simular a chegada de uma Ordem de Alto Nível ao Atuador
-        JButton btnSimularOrdemLuz = new JButton("Interruptor");
-        btnSimularOrdemLuz.addActionListener(e -> {
-            // Simula a receção de um HighLevelOrderEvent
-            AreaLightingOrderEvent ordem = new AreaLightingOrderEvent(
-                    Areas.LivingRoom,
-                    101,
-                    !luzIcon.isLigada() // Alterna o estado
-            );
-
-            // Atualiza o componente gráfico do Atuador
-            luzIcon.setLigada(ordem.isTurnOn());
-
-            // Imprime na consola a confirmação da ação
+        JButton btnLuz = new JButton("Ligar/Desligar Luz");
+        btnLuz.addActionListener(e -> {
+            boolean novoEstado = !luzIcon.isLigada();
+            AreaLightingOrderEvent ordem = new AreaLightingOrderEvent(Areas.Kitchen, 101, novoEstado);
+            luzIcon.setLigada(novoEstado);
             System.out.println("[GUI -> ACTUATOR ORDER] " + ordem);
-            System.out.println("[HISTÓRICO ATUADOR] Luz " + (luzIcon.isLigada() ? "DESLIGADA" : "LIGADA"));
+            System.out.println("[HISTÓRICO ATUADOR] Luz " + (novoEstado ? "LIGADA" : "DESLIGADA"));
         });
+        JPanel painelLuz = criarPainelAtuador("💡 Iluminação", luzIcon, btnLuz);
 
-        // Painel para o Atuador
-        JPanel painelAtuador = new JPanel(new BorderLayout(5, 5));
-        painelAtuador.setBorder(BorderFactory.createTitledBorder("💡 Atuador de Iluminação"));
-        painelAtuador.add(luzIcon, BorderLayout.CENTER);
-        painelAtuador.add(btnSimularOrdemLuz, BorderLayout.SOUTH);
+        // B) Atuador de Ar Condicionado (ACIcon)
+        acIcon = new ACIcon();
+        JButton btnAC = new JButton("Ligar/Desligar AC");
+        btnAC.addActionListener(e -> {
+            AirConditioningMode novoModo = (acIcon.getModo() == AirConditioningMode.Desligado)
+                    ? AirConditioningMode.Frio
+                    : AirConditioningMode.Desligado;
 
-        // Adicionar à janela
+            acIcon.setModo(novoModo);
+            acIcon.setTemperatura(23.5);
+            AreaTemperatureOrderEvent ordem = new AreaTemperatureOrderEvent(Areas.LivingRoom, 102, 23.5);
+
+            System.out.println("[GUI -> ACTUATOR ORDER] AC Modo: " + novoModo);
+            System.out.println("[HISTÓRICO ATUADOR] Ar Condicionado " + novoModo);
+        });
+        JPanel painelAC = criarPainelAtuador("❄️ Ar Condicionado", acIcon, btnAC);
+
+        // C) Atuador de Ventilação (VentilatorIcon)
+        ventiladorIcon = new VentilatorIcon();
+        JButton btnVentilador = new JButton("Ligar/Desligar Ventilador");
+        btnVentilador.addActionListener(e -> {
+            boolean novoEstado = !ventiladorIcon.isLigado();
+            ventiladorIcon.setLigado(novoEstado);
+            AreaVentilationOrderEvent ordem = new AreaVentilationOrderEvent(Areas.WC, 103, novoEstado);
+
+            System.out.println("[GUI -> ACTUATOR ORDER] " + ordem);
+            System.out.println("[HISTÓRICO ATUADOR] Ventilador " + (novoEstado ? "LIGADO" : "DESLIGADO"));
+        });
+        JPanel painelVentilador = criarPainelAtuador("🌀 Ventilação", ventiladorIcon, btnVentilador);
+
+        // D) Atuador de Rega (IrrigationIcon)
+        regaIcon = new IrrigationIcon();
+        JButton btnRega = new JButton("Ligar/Desligar Rega");
+        btnRega.addActionListener(e -> {
+            boolean novoEstado = !regaIcon.isAtiva();
+            regaIcon.setAtiva(novoEstado);
+            regaIcon.setZona(1);
+            regaIcon.setDuracao(15);
+            AreaIrrigationOrderEvent ordem = new AreaIrrigationOrderEvent(Areas.Garden, 104, novoEstado);
+
+            System.out.println("[GUI -> ACTUATOR ORDER] " + ordem);
+            System.out.println("[HISTÓRICO ATUADOR] Rega " + (novoEstado ? "LIGADA" : "DESLIGADA"));
+        });
+        JPanel painelRega = criarPainelAtuador("🌿 Rega", regaIcon, btnRega);
+
+        // Adicionar todos os painéis à janela principal
         add(sensorTemp);
-        add(painelAtuador);
+        add(sensorHumidadeAr);
+        add(sensorSolo);
+        add(sensorLuz);
+
+        add(painelLuz);
+        add(painelAC);
+        add(painelVentilador);
+        add(painelRega);
 
         pack();
         setLocationRelativeTo(null);
+    }
+
+    private JPanel criarPainelAtuador(String titulo, JComponent icone, JButton botao) {
+        JPanel painel = new JPanel(new BorderLayout(5, 5));
+        painel.setBorder(BorderFactory.createTitledBorder(titulo));
+        painel.add(icone, BorderLayout.CENTER);
+        painel.add(botao, BorderLayout.SOUTH);
+        return painel;
     }
 
     public static void main(String[] args) {
