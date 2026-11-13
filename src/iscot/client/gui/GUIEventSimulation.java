@@ -33,7 +33,7 @@ public class GUIEventSimulation extends JFrame {
         // Sensor de Temperatura
         SensorControl sensorTemp = new SensorControl(
                 "🌡️", "Sensor Temperatura", "ºC",
-                10.0, 40.0, 0.5, 22.0,
+                16.0, 30.0, 0.5, 23.0,
                 valor -> {
                     TemperatureSensorEvent evento = new TemperatureSensorEvent(Areas.Kitchen, 1, valor);
                     System.out.println("[GUI -> SENSOR EVENT] " + evento);
@@ -63,7 +63,7 @@ public class GUIEventSimulation extends JFrame {
         // Sensor de Luz
         SensorControl sensorLuz = new SensorControl(
                 "☀️", "Sensor de Luz", "lx",
-                0.0, 1000.0, 10.0, 200.0,
+                0.0, 100.0, 10.0, 20.0,
                 valor -> {
                     LightSensorEvent evento = new LightSensorEvent(Areas.LivingRoom, 4, valor);
                     System.out.println("[GUI -> SENSOR EVENT] " + evento);
