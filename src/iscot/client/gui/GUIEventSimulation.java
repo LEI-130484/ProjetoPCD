@@ -98,7 +98,7 @@ public class GUIEventSimulation extends JFrame {
             acIcon.setTemperatura(23.5);
             AreaTemperatureOrderEvent ordem = new AreaTemperatureOrderEvent(Areas.LivingRoom, 102, 23.5);
 
-            System.out.println("[GUI -> ACTUATOR ORDER] AC Modo: " + novoModo);
+            System.out.println("[GUI -> ACTUATOR ORDER] AC Modo: " + ordem);
             System.out.println("[HISTÓRICO ATUADOR] Ar Condicionado " + novoModo);
         });
         JPanel painelAC = criarPainelAtuador("❄️ Ar Condicionado", acIcon, btnAC);
