@@ -32,7 +32,7 @@ public class GUIEventSimulation extends JFrame {
 
         // Sensor de Temperatura
         SensorControl sensorTemp = new SensorControl(
-                "🌡️", "Sensor Temperatura", "ºC",
+                " ", "Sensor Temperatura", "ºC",
                 16.0, 30.0, 0.5, 23.0,
                 valor -> {
                     TemperatureSensorEvent evento = new TemperatureSensorEvent(Areas.Kitchen, 1, valor);
@@ -42,7 +42,7 @@ public class GUIEventSimulation extends JFrame {
 
         // Sensor de Humidade do Ar
         SensorControl sensorHumidadeAr = new SensorControl(
-                "💧", "Sensor Humidade Ar", "%",
+                " ", "Sensor Humidade Ar", "%",
                 0.0, 100.0, 1.0, 50.0,
                 valor -> {
                     HumiditySensorEvent evento = new HumiditySensorEvent(Areas.WC, 2, valor);
@@ -52,7 +52,7 @@ public class GUIEventSimulation extends JFrame {
 
         // Sensor de Humidade do Solo
         SensorControl sensorSolo = new SensorControl(
-                "🌱", "Sensor Humidade Solo", "%",
+                " ", "Sensor Humidade Solo", "%",
                 0.0, 100.0, 1.0, 30.0,
                     valor -> {
                         GroundMoistureSensorEvent evento = new GroundMoistureSensorEvent(Areas.Garden, 3, valor < 30.0);
@@ -62,7 +62,7 @@ public class GUIEventSimulation extends JFrame {
 
         // Sensor de Luz
         SensorControl sensorLuz = new SensorControl(
-                "☀️", "Sensor de Luz", "lx",
+                " ", "Sensor de Luz", "lx",
                 0.0, 1000.0, 10.0, 200.0,
                 valor -> {
                     LightSensorEvent evento = new LightSensorEvent(Areas.LivingRoom, 4, valor);
@@ -84,7 +84,7 @@ public class GUIEventSimulation extends JFrame {
             System.out.println("[GUI -> ACTUATOR ORDER] " + ordem);
             System.out.println("[HISTÓRICO ATUADOR] Luz " + (novoEstado ? "LIGADA" : "DESLIGADA"));
         });
-        JPanel painelLuz = criarPainelAtuador("💡 Iluminação", luzIcon, btnLuz);
+        JPanel painelLuz = criarPainelAtuador("Iluminação", luzIcon, btnLuz);
 
         // B) Atuador de Ar Condicionado (ACIcon)
         acIcon = new ACIcon();
@@ -101,7 +101,7 @@ public class GUIEventSimulation extends JFrame {
             System.out.println("[GUI -> ACTUATOR ORDER] AC Modo: " + ordem);
             System.out.println("[HISTÓRICO ATUADOR] Ar Condicionado " + novoModo);
         });
-        JPanel painelAC = criarPainelAtuador("❄️ Ar Condicionado", acIcon, btnAC);
+        JPanel painelAC = criarPainelAtuador("Ar Condicionado", acIcon, btnAC);
 
         // C) Atuador de Ventilação (VentilatorIcon)
         ventiladorIcon = new VentilatorIcon();
@@ -114,7 +114,7 @@ public class GUIEventSimulation extends JFrame {
             System.out.println("[GUI -> ACTUATOR ORDER] " + ordem);
             System.out.println("[HISTÓRICO ATUADOR] Ventilador " + (novoEstado ? "LIGADO" : "DESLIGADO"));
         });
-        JPanel painelVentilador = criarPainelAtuador("🌀 Ventilação", ventiladorIcon, btnVentilador);
+        JPanel painelVentilador = criarPainelAtuador("Ventilação", ventiladorIcon, btnVentilador);
 
         // D) Atuador de Rega (IrrigationIcon)
         regaIcon = new IrrigationIcon();
@@ -129,7 +129,7 @@ public class GUIEventSimulation extends JFrame {
             System.out.println("[GUI -> ACTUATOR ORDER] " + ordem);
             System.out.println("[HISTÓRICO ATUADOR] Rega " + (novoEstado ? "LIGADA" : "DESLIGADA"));
         });
-        JPanel painelRega = criarPainelAtuador("🌿 Rega", regaIcon, btnRega);
+        JPanel painelRega = criarPainelAtuador("Rega", regaIcon, btnRega);
 
         // Adicionar todos os painéis à janela principal
         add(sensorTemp);
