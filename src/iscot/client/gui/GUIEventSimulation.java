@@ -63,7 +63,7 @@ public class GUIEventSimulation extends JFrame {
         // Sensor de Luz
         SensorControl sensorLuz = new SensorControl(
                 "☀️", "Sensor de Luz", "lx",
-                0.0, 100.0, 10.0, 20.0,
+                0.0, 1000.0, 10.0, 200.0,
                 valor -> {
                     LightSensorEvent evento = new LightSensorEvent(Areas.LivingRoom, 4, valor);
                     System.out.println("[GUI -> SENSOR EVENT] " + evento);
