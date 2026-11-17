@@ -4,21 +4,27 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
+
+import iscot.enums.Areas;
+import iscot.events.Event;
+import iscot.events.SensorEvents.HumiditySensorEvent;
 import iscot.server.Server;
 
 public class Client {
-    private BufferedReader in;
-    private PrintWriter out;
+    private ObjectInputStream in;
+    private ObjectOutputStream out;
     private Socket socket; 
 
-    public void runClient () {
+    public void runClient () throws ClassNotFoundException {
         try {
             connectToServer();
-            sendMessages();
+            sendEvent(new HumiditySensorEvent(Areas.BedRoom, 1, 50));
         } catch ( IOException e ) {
         } finally {
             try {
@@ -29,25 +35,26 @@ public class Client {
         }
     }
 
-    public void sendMessages() throws IOException {
-        for (int i = 0; i < 5; i ++) {
-            out.println("Ola " + i);
-            String str = in.readLine();
-            System.out.println(str);
-        }
-        out.println("FIM");
+    public void sendEvent(Event event) throws IOException, ClassNotFoundException {
+        out.writeObject(event);
+        String s = (String) in.readObject();
+        System.out.println(s);
     }
 
     public void connectToServer() throws IOException {
         InetAddress server = InetAddress.getByName("127.0.0.1");
         this.socket = new Socket(server, Server.PORTO);
 
-        this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        this.out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream ())), true);
+        this.out = new ObjectOutputStream(socket.getOutputStream());
+        this.in = new ObjectInputStream(socket.getInputStream());
     }
 
     public static void main(String[] args) {
         Client client = new Client();
-        client.runClient();
+        try {
+            client.runClient();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }
