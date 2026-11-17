@@ -14,19 +14,21 @@ public abstract class Client {
     private ObjectOutputStream out;
     private Socket socket; 
 
-    public abstract void runClient () throws ClassNotFoundException;
-    //    try {
-    //        connectToServer();
-    //        sendEvent(new HumiditySensorEvent(Areas.BedRoom, 1, 50));
-    //    } catch ( IOException e ) {
-    //    } finally {
-    //        try {
-    //            socket.close ();
-    //        } catch ( IOException e ) {
+    public void runClient () throws ClassNotFoundException {
+        try {
+            connectToServer();
+            clientLoop();
+        } catch ( IOException e ) {
+        } finally {
+            try {
+                socket.close ();
+            } catch ( IOException e ) {
 
-    //        }
-    //    }
-    //}
+            }
+        }
+    }
+
+    public abstract void clientLoop() throws ClassNotFoundException, IOException;
 
     public void sendEvent(Event event) throws IOException, ClassNotFoundException {
         out.writeObject(event);
