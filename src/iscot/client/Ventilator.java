@@ -13,14 +13,8 @@ import iscot.events.HighLevelOrderEvents.AreaVentilationOrderEvent;
 
 public class Ventilator extends Atuador{
 
-	private Areas area;
-
 	public Ventilator(Areas area) {
-		this.area = area;
-	}
-
-	public Areas getArea() {
-		return this.area;
+		super(area);
 	}
 
 	/**

@@ -6,6 +6,8 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import iscot.enums.Areas;
+import iscot.enums.Type;
 import iscot.server.Server;
 
 public abstract class Client {
@@ -13,12 +15,32 @@ public abstract class Client {
     private ObjectOutputStream out;
     private Socket socket; 
 
+    private Type type;
+    private Areas area;
+
+    public Client(Type type, Areas area) {
+        this.type = type;
+        this.area = area;
+    }
+
     public ObjectInputStream getInClient() {
         return in;
     }
 
     public ObjectOutputStream getOutClient() {
         return out;
+    }
+
+	public Areas getArea() {
+		return this.area;
+	}
+
+	public Type getType() {
+		return this.type;
+	}
+
+    public void registerWithServer() {
+
     }
 
     public void connectToServer() throws IOException {

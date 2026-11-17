@@ -11,16 +11,9 @@ import iscot.events.SensorEvents.HumiditySensorEvent;
 
 public class HumiditySensor extends Sensor{
 
-	private Areas area;
-
 	public HumiditySensor(Areas area) {
-		this.area = area;
+		super(area);
 	}
-
-	public Areas getArea() {
-		return this.area;
-	}
-
 
 	/**
 	 * 
