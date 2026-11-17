@@ -14,22 +14,6 @@ public abstract class Client {
     private ObjectOutputStream out;
     private Socket socket; 
 
-    public void runClient () throws ClassNotFoundException {
-        try {
-            connectToServer();
-            clientLoop();
-        } catch ( IOException e ) {
-        } finally {
-            try {
-                socket.close ();
-            } catch ( IOException e ) {
-
-            }
-        }
-    }
-
-    public abstract void clientLoop() throws ClassNotFoundException, IOException;
-
     public void sendEvent(Event event) throws IOException, ClassNotFoundException {
         out.writeObject(event);
         String s = (String) in.readObject();
