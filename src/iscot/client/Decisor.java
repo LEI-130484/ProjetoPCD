@@ -10,7 +10,6 @@ public class Decisor extends Client{
 
     public Decisor( Areas area) {
         super(Type.DECIDER, area);
-        //TODO Auto-generated constructor stub
     }
 
     public void sendEvent(Event event) throws IOException, ClassNotFoundException {

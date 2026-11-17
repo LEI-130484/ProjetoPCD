@@ -8,6 +8,7 @@ import java.net.Socket;
 
 import iscot.enums.Areas;
 import iscot.enums.Type;
+import iscot.events.RegistrationEvent;
 import iscot.server.Server;
 
 public abstract class Client {
@@ -39,8 +40,8 @@ public abstract class Client {
 		return this.type;
 	}
 
-    public void registerWithServer() {
-
+    public void registerWithServer() throws IOException {
+        getOutClient().writeObject(new RegistrationEvent(type, area, 0));
     }
 
     public void connectToServer() throws IOException {
