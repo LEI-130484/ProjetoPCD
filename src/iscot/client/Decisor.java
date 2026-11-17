@@ -1,4 +1,15 @@
 package iscot.client;
 
+import java.io.IOException;
+
+import iscot.events.Event;
+
 public class Decisor extends Client{
+
+    public void sendEvent(Event event) throws IOException, ClassNotFoundException {
+        getOutClient().writeObject(event);
+        String s = (String) getInClient().readObject();
+        System.out.println(s);
+    }
+
 }

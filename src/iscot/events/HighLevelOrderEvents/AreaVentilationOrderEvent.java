@@ -11,7 +11,7 @@ public class AreaVentilationOrderEvent extends HighLevelOrderEvent {
         this.startVentilation = startVentilation;
     }
 
-    public boolean isStartVentilation() {
+    public boolean getStartVentilation() {
         return startVentilation;
     }
 

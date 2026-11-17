@@ -9,8 +9,19 @@ import javax.swing.JPanel;
 
 import iscot.client.gui.VentilatorIcon;
 import iscot.enums.Areas;
+import iscot.events.HighLevelOrderEvents.AreaVentilationOrderEvent;
 
-public class Ventilator {
+public class Ventilator extends Atuador{
+
+	private Areas area;
+
+	public Ventilator(Areas area) {
+		this.area = area;
+	}
+
+	public Areas getArea() {
+		return this.area;
+	}
 
 	/**
 	 * 
@@ -27,12 +38,14 @@ public class Ventilator {
 			System.err.println("Invalid arguments!");
 		}
 		else {
+			Ventilator ventilator = new Ventilator(Areas.valueOf(args[2]));
 			// TODO connect to server
+			ventilator.connectToServer();
+
 			
 			// TODO register with the server
-			Areas area=Areas.valueOf(args[2]);
 			
-			JFrame janela = new JFrame("Ventilador em "+area);
+			JFrame janela = new JFrame("Ventilador em "+ ventilator.getArea());
 			janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		
@@ -40,8 +53,8 @@ public class Ventilator {
 			// Criar os componentes gráficos
 			JPanel painel=new JPanel();
 			painel.setLayout(new BorderLayout());
-			VentilatorIcon ventilator = new VentilatorIcon();
-			painel.add(ventilator,BorderLayout.CENTER);
+			VentilatorIcon ventilatorIcon = new VentilatorIcon();
+			painel.add(ventilatorIcon,BorderLayout.CENTER);
 			janela.setContentPane(painel);
 			janela.setLocation(600, 400);
 			janela.setMinimumSize(janela.getSize());
@@ -49,11 +62,13 @@ public class Ventilator {
 			janela.setVisible(true);
 			
 			Thread.sleep(5000);
-			ventilator.setAtivo(true);
+			ventilatorIcon.setAtivo(true);
 
 			// TODO: receive and handle messages from server
+			AreaVentilationOrderEvent event = (AreaVentilationOrderEvent) ventilator.getEventFromServer();
+
+			ventilatorIcon.setLigado(event.getStartVentilation());
 			
-			// TODO: for first phase: create an appropriate event hardcoded locally and change the GUI accordingly
 		}
 	}
 }

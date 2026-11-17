@@ -6,7 +6,6 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 
-import iscot.events.Event;
 import iscot.server.Server;
 
 public abstract class Client {
@@ -14,10 +13,12 @@ public abstract class Client {
     private ObjectOutputStream out;
     private Socket socket; 
 
-    public void sendEvent(Event event) throws IOException, ClassNotFoundException {
-        out.writeObject(event);
-        String s = (String) in.readObject();
-        System.out.println(s);
+    public ObjectInputStream getInClient() {
+        return in;
+    }
+
+    public ObjectOutputStream getOutClient() {
+        return out;
     }
 
     public void connectToServer() throws IOException {
