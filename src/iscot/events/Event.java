@@ -4,7 +4,7 @@ import iscot.enums.Areas;
 import iscot.enums.Type;
 import java.io.Serializable;
 
-public abstract class Event{
+public abstract class Event implements Serializable{
 
     Areas area;
     Type type;
