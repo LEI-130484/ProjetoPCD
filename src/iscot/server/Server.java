@@ -30,16 +30,12 @@ public class Server {
     }
 
     private void serve() throws IOException, ClassNotFoundException {
-        //while(true) {
+        while(true) {
             Event event = (Event) in.readObject();
-
-//            if(Event.equals("FIM")) {
-//                break;
-//            }
             
             System.out.println("Menssagem do cliente:" + event);
             out.writeObject("Thx");
-        //}
+        }
     }
 
     private void doConnections(Socket socket) throws IOException {

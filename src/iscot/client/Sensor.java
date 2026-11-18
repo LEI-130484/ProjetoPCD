@@ -10,7 +10,6 @@ public abstract class Sensor extends Client{
 
     public Sensor(Areas area) {
         super(Type.SENSOR, area);
-        //TODO Auto-generated constructor stub
     }
 
     public void sendEvent(Event event) throws IOException, ClassNotFoundException {
@@ -18,5 +17,4 @@ public abstract class Sensor extends Client{
         String s = (String) getInClient().readObject();
         System.out.println(s);
     }
-
 }

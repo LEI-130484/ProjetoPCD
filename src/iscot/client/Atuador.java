@@ -17,5 +17,4 @@ public abstract class Atuador extends Client{
 
         return event;
     }
-    
 }

@@ -24,7 +24,7 @@ public class HumiditySensor extends Sensor{
 	 * @throws NumberFormatException 
 	 * @throws InterruptedException 
 	 */
-	public static void main(String[] args) throws NumberFormatException, InterruptedException {
+	public static void main(String[] args) throws NumberFormatException, InterruptedException, IOException {
 		if(args.length!=3) {
 			System.err.println("Invalid arguments!");
 		}
@@ -32,13 +32,10 @@ public class HumiditySensor extends Sensor{
 			HumiditySensor sensor = new HumiditySensor(Areas.valueOf(args[2]));
 
 			// TODO connect to the server
-			try {
-				sensor.connectToServer();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			sensor.connectToServer();
 
 			// TODO register with the server
+			//sensor.registerWithServer();
 			
 
 			JFrame janela = new JFrame("Humidade em "+ sensor.getArea());
@@ -51,7 +48,7 @@ public class HumiditySensor extends Sensor{
 			SensorControl sensorControl= new SensorControl( "☀", "Humidade - "+sensor.getArea(), "%",
 				    0, 100, 1, 50,
 				    valor -> {
-				    	System.out.println("Mudou para:"+valor);
+				    	System.out.println("Mudou para: "+valor);
 						try {
 							sensor.sendEvent(new HumiditySensorEvent(sensor.getArea(), 0, valor));
 						} catch (ClassNotFoundException e) {

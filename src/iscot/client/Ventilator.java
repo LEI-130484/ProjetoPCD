@@ -38,6 +38,7 @@ public class Ventilator extends Atuador{
 
 			
 			// TODO register with the server
+			ventilator.registerWithServer();
 			
 			JFrame janela = new JFrame("Ventilador em "+ ventilator.getArea());
 			janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
