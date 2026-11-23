@@ -47,7 +47,6 @@ public abstract class Client {
     public void connectToServer() throws IOException {
         InetAddress server = InetAddress.getByName(null);
         this.socket = new Socket(server, Server.PORTO);
-        System.out.println(socket);
 
         this.out = new ObjectOutputStream(socket.getOutputStream());
         this.in = new ObjectInputStream(socket.getInputStream());

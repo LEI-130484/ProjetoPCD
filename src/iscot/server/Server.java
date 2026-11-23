@@ -18,11 +18,11 @@ public class Server {
 
         try{
             while(true) {
-                System.out.println("novo ciclo");
                 Socket socket = ss.accept();
-                System.out.println("entrou um cliente");
+                doConnections(socket);
+                registerClient();
 
-                Connection connection = new Connection(in, out, socket);
+                Connection connection = new Connection(in, out);
                 Thread thread = new Thread(connection);
                 thread.start();
             }
@@ -30,6 +30,17 @@ public class Server {
             ss.close();
         }
     }
+
+    private void registerClient() throws ClassNotFoundException, IOException {
+        Event event = (Event) in.readObject();
+        System.out.println(event);
+    }
+
+    private void doConnections(Socket socket) throws IOException {
+        this.out = new ObjectOutputStream(socket.getOutputStream());
+        this.in = new ObjectInputStream(socket.getInputStream());
+    }
+
 
     public static void main(String[] args) throws ClassNotFoundException, IOException {
         Server server = new Server();
