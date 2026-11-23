@@ -15,41 +15,25 @@ public class Server {
 
     public void startServing() throws IOException, ClassNotFoundException {
         ServerSocket ss = new ServerSocket(PORTO);
-        
-        try {
-            Socket socket = ss.accept();
-            try {
-                doConnections(socket);
-                serve();
-            } finally {
-                socket.close();
+
+        try{
+            while(true) {
+                System.out.println("novo ciclo");
+                Socket socket = ss.accept();
+                System.out.println("entrou um cliente");
+
+                Connection connection = new Connection(in, out, socket);
+                Thread thread = new Thread(connection);
+                thread.start();
             }
         } finally {
             ss.close();
         }
     }
 
-    private void serve() throws IOException, ClassNotFoundException {
-        while(true) {
-            Event event = (Event) in.readObject();
-            
-            System.out.println("Menssagem do cliente:" + event);
-            out.writeObject("Thx");
-        }
+    public static void main(String[] args) throws ClassNotFoundException, IOException {
+        Server server = new Server();
+        server.startServing();
     }
 
-    private void doConnections(Socket socket) throws IOException {
-        this.out = new ObjectOutputStream(socket.getOutputStream());
-        this.in = new ObjectInputStream(socket.getInputStream());
-    }
-
-    public static void main(String[] args) {
-        try {
-            new Server().startServing();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
 }

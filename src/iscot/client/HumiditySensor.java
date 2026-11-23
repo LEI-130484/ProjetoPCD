@@ -33,9 +33,11 @@ public class HumiditySensor extends Sensor{
 
 			// TODO connect to the server
 			sensor.connectToServer();
+			System.out.println("liguei ao server");
 
 			// TODO register with the server
-			//sensor.registerWithServer();
+			sensor.registerWithServer();
+			System.out.println("registei");
 			
 
 			JFrame janela = new JFrame("Humidade em "+ sensor.getArea());
