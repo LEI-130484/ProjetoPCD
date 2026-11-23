@@ -1,20 +1,19 @@
 package iscot.server;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import iscot.events.Event;
+
 public class Server {
     public final static int PORTO = 8080;
-    private BufferedReader in;
-    private PrintWriter out;
+    private ObjectInputStream in;
+    private ObjectOutputStream out;
 
-    public void startServing() throws IOException {
+    public void startServing() throws IOException, ClassNotFoundException {
         ServerSocket ss = new ServerSocket(PORTO);
         
         try {
@@ -30,28 +29,26 @@ public class Server {
         }
     }
 
-    private void serve() throws IOException {
+    private void serve() throws IOException, ClassNotFoundException {
         while(true) {
-            String message = in.readLine();
-
-            if(message.equals("FIM")) {
-                break;
-            }
+            Event event = (Event) in.readObject();
             
-            System.out.println("Menssagem do cliente:" + message);
-            out.println(message);
+            System.out.println("Menssagem do cliente:" + event);
+            out.writeObject("Thx");
         }
     }
 
     private void doConnections(Socket socket) throws IOException {
-        this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        this.out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream ())), true);
+        this.out = new ObjectOutputStream(socket.getOutputStream());
+        this.in = new ObjectInputStream(socket.getInputStream());
     }
 
     public static void main(String[] args) {
         try {
             new Server().startServing();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
